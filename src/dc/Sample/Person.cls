@@ -11,6 +11,8 @@ Property Phone As %VarString;
 
 Property DOB As %Date(MAXVAL = "$piece($horolog, "","", 1)");
 
+Property PersonId As %Integer [ Calculated, SqlComputeCode = { set {*}={%%ID}}, SqlComputed ];
+
 /// Index for property DOB
 Index DOBIndex On DOB;
 
