@@ -9,7 +9,6 @@ Parameter ExposeServerExceptions = 0;
 /// Get all persons
 ClassMethod GetAllPersons() As %Stream.Object
 {
-    d ..%SetContentType("application/json")
     Set rset = ##class(dc.Sample.Person).ExtentFunc()
 
     set stream=##class(%Stream.TmpCharacter).%New()
@@ -32,7 +31,6 @@ ClassMethod GetAllPersons() As %Stream.Object
 ///     person<br/>
 ClassMethod CreatePerson(person As %Stream.Object) As %Stream.Object
 {
-    d ..%SetContentType("application/json")
     set personObj = ##class(dc.Sample.Person).%New()
     set status = personObj.%JSONImport(person)
     if $$$ISERR(status) {
@@ -59,7 +57,6 @@ ClassMethod CreatePerson(person As %Stream.Object) As %Stream.Object
 ///     id<br/>
 ClassMethod GetPersonById(id As %String) As %Stream.Object
 {
-    d ..%SetContentType("application/json")
     set person = ##class(dc.Sample.Person).%OpenId(id)
     if person = "" {
         d ..%SetStatusCode(404)
@@ -76,7 +73,6 @@ ClassMethod GetPersonById(id As %String) As %Stream.Object
 ///     person<br/>
 ClassMethod UpdatePersonById(id As %String, person As %Stream.Object) As %Stream.Object
 {
-    d ..%SetContentType("application/json")
     set personObj = ##class(dc.Sample.Person).%OpenId(id)
     if personObj = "" {
         d ..%SetStatusCode(404)
@@ -112,7 +108,6 @@ ClassMethod UpdatePersonById(id As %String, person As %Stream.Object) As %Stream
 ///     id<br/>
 ClassMethod DeletePersonById(id As %String) As %Stream.Object
 {
-    d ..%SetContentType("application/json")
     set sc=##class(dc.Sample.Person).%DeleteId(id)
     if $$$ISERR(sc) {
         d ..%SetStatusCode(404)
