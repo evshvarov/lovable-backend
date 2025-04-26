@@ -5,6 +5,21 @@ Parameter HandleCorsRequest = 1;
 
 Parameter CONTENTTYPE = "application/json";
 
+ClassMethod OnPreDispatch(pUrl As %String, pMethod As %String, ByRef pContinue As %Boolean) As %Status
+{
+	do %response.SetHeader("Access-Control-Allow-Origin", "*")
+	do %response.SetHeader("Allow-Access-Control-Credentials", 1)
+	do %response.SetHeader("Access-Control-Allow-Headers", "X-Requested-With")
+	do %response.SetHeader("X-Requested-With", "XMLHttpRequestXMLHttpRequest")
+	do %response.SetHeader("Access-Control-Allow-Headers","Content-Type, Authorization, Accept-Language, X-Requested-With, session")
+
+	set debug =  %request.Get("debug")
+	if (debug = "1") {
+		zwrite %request
+	}
+	quit $$$OK
+}
+
 XData OpenAPI [ MimeType = application/json ]
 {
 {
