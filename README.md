@@ -5,7 +5,7 @@
  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/intersystems-community/iris-rest-api-template">
 
 This is a template of a REST API application built with ObjectScript in InterSystems IRIS.
-It also has OPEN API spec, 
+It also has OPEN API spec,
 can be developed with Docker and VSCode,
 can ve deployed as ZPM module.
 
@@ -43,7 +43,7 @@ These interface works with a sample persistent class dc.Sample.Person.
 
 Open http://localhost:52773/swagger-ui/index.html to test the REST API
 
-# Testing GET requests
+### Testing GET requests
 
 To test GET you need to have some data. You can create it with POST request (see below), or you can create some fake testing data. to do that open IRIS terminal or web terminal on /localhost:52773/terminal/  and call:
 
@@ -77,7 +77,7 @@ This will return JSON data for the person with ID=1, something like that:
 {"Name":"Elon Mask","Title":"CEO","Company":"Tesla","Phone":"123-123-1233","DOB":"1982-01-19"}
 ```
 
-# Testing POST request
+### Testing POST request
 
 Create a POST request e.g. in Postman with raw data in JSON. e.g.
 

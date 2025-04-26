@@ -119,3 +119,6 @@ docker run --rm --name iris-ce -d -p 9092:52773 containers.intersystems.com/inte
 
 list all the specs:
 http://localhost:52773/api/mgmnt/
+
+
+D ##class(Security.Users).Export("/home/irisowner/dev/roles.xml",,"*",1)

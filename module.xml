@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-  <Document name="rest-api-template.ZPM">
+  <Document name="rest-api-first-sample.ZPM">
     <Module>
-      <Name>rest-api-template</Name>
-      <Version>1.1.0</Version>
+      <Name>rest-api-first-sample</Name>
+       <Description>An Example of API First IRIS REST backend</Description>
+      <Keywords>api-first-lovable</Keywords>
+      <Version>1.0.0</Version>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
-      <Resource Name="dc.Sample.PKG"/>
-      <Dependencies>
-        <ModuleReference>
-          <Name>swagger-ui</Name>
-          <Version>1.*.*</Version>
-        </ModuleReference>
-      </Dependencies>
-       <CSPApplication 
-        Url="/crud"
-        DispatchClass="dc.Sample.PersonREST"
+      <Resource Name="dc.Sample.Person.CLS"/>
+      <Resource Name="dc.Sample.rest2.PKG"/>
+
+       <CSPApplication
+        Url="/crud2"
+        DispatchClass="dc.Sample.rest2.disp"
         MatchRoles=":{$dbrole}"
         PasswordAuthEnabled="1"
         UnauthenticatedEnabled="0"
         Recurse="1"
         UseCookies="2"
-        CookiePath="/crud"
+        CookiePath="/crud2/"
        />
+     <Invoke Class="dc.Sample.rest2.security" Method="SetupSecurity">
+    </Invoke>
     </Module>
-    
+
   </Document>
 </Export>

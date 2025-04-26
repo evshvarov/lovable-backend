@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RolesExport>
+  <Roles>
+    <Name>lovable</Name>
+    <Version>4</Version>
+  </Roles>
+  <Roles>
+    <GrantedRoles>
+      <GrantedRolesItem>%DB_USER</GrantedRolesItem>
+    </GrantedRoles>
+    <Name>lovable</Name>
+    <Version>4</Version>
+  </Roles>
+  <SQLPrivileges>
+    <Namespace>USER</Namespace>
+    <SQLObject>1,dc_Sample.Person</SQLObject>
+    <Privilege>s</Privilege>
+    <Grantee>lovable</Grantee>
+    <Grantor>SuperUser</Grantor>
+    <Grantable>0</Grantable>
+  </SQLPrivileges>
+  <SQLRoleGrantOption>
+    <UserOrRole>lovable</UserOrRole>
+    <RoleGranted>%DB_USER</RoleGranted>
+    <Grantable>0</Grantable>
+  </SQLRoleGrantOption>
+</RolesExport>
