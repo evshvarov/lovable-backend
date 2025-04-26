@@ -9,20 +9,16 @@ Parameter ExposeServerExceptions = 0;
 /// Get all persons
 ClassMethod GetAllPersons() As %Stream.Object
 {
-    Set rset = ##class(dc.Sample.Person).ExtentFunc()
+    set rset = ##class(dc.Sample.Person).ExtentFunc()
 
     set stream=##class(%Stream.TmpCharacter).%New()
-    d stream.Write("[")
-    if rset.%Next() {
-        Set person = ##class(dc.Sample.Person).%OpenId(rset.ID)
-        Do person.%JSONExportToStream(.stream)
-    }
+    set dynArray = [].%New()
     While rset.%Next() {
-        d stream.Write(",")
-        Set person = ##class(dc.Sample.Person).%OpenId(rset.ID)
-        Do person.%JSONExportToStream(.stream)
+        do ##class(dc.Sample.Person).%OpenId(rset.ID).%JSONExportToString(.myPerson)
+        Set dynObj = {}.%FromJSON(myPerson)
+        do dynArray.%Push(dynObj)
     }
-    d stream.Write("]")
+    d stream.Write(dynArray.%ToJSON())
     return stream
 }
 
