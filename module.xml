@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-  <Document name="rest-api-first-sample.ZPM">
+  <Document name="rest-api-first-lovable.ZPM">
     <Module>
-      <Name>rest-api-first-sample</Name>
-       <Description>An Example of API First IRIS REST backend</Description>
+      <Name>rest-api-first-lovable</Name>
+       <Description>An Example of API First IRIS REST backend for Lovable</Description>
       <Keywords>api-first-lovable</Keywords>
       <Version>1.0.0</Version>
       <Packaging>module</Packaging>
