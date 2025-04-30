@@ -1,7 +1,7 @@
 Class dc.Sample.rest2.spec Extends %REST.Spec [ ProcedureBlock ]
 {
 
-Parameter HandleCorsRequest;
+Parameter HandleCorsRequest = 1;
 
 Parameter CONTENTTYPE = "application/json";
 

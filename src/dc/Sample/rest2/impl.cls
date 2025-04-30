@@ -13,7 +13,7 @@ ClassMethod OnPreDispatch(pUrl As %String, pMethod As %String, ByRef pContinue A
 	do %response.SetHeader("Access-Control-Allow-Headers", "X-Requested-With")
 	do %response.SetHeader("X-Requested-With", "XMLHttpRequestXMLHttpRequest")
 	do %response.SetHeader("Access-Control-Allow-Headers","Content-Type, Authorization, Accept-Language, X-Requested-With, session")
-
+    do %response.SetHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 	set debug =  %request.Get("debug")
 	if (debug = "1") {
 		zwrite %request
