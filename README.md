@@ -1,6 +1,8 @@
 # lovable-backend
 This is a an example of InterSystems spec first REST API Backend for Lovable.dev frontend.
 
+<img width="937" alt="Image" src="https://github.com/user-attachments/assets/dd2ad84d-1658-45ce-a544-567b00c2c895" />
+
 ## Installation with ZPM
 
 zpm:USER>install rest-api-template
@@ -20,10 +22,6 @@ Open the terminal in this directory and run:
 ```
 $ docker-compose up -d --build
 ```
-
-or open the folder in VSCode and do the following:
-![rest](https://user-images.githubusercontent.com/2781759/78183327-63569800-7470-11ea-8561-c3b547ce9001.gif)
-
 
 ## How to Work With it
 
