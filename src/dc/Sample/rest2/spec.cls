@@ -4,6 +4,7 @@ Class dc.Sample.rest2.spec Extends %REST.Spec [ ProcedureBlock ]
 Parameter HandleCorsRequest = 1;
 
 Parameter CONTENTTYPE = "application/json";
+Parameter ExposeServerExceptions = 1;
 
 XData OpenAPI [ MimeType = application/json ]
 {
