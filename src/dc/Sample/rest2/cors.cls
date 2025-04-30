@@ -8,6 +8,7 @@ ClassMethod OnHandleCorsRequest(url As %String) As %Status
 	do %response.SetHeader("Access-Control-Allow-Headers", "X-Requested-With")
 	do %response.SetHeader("X-Requested-With", "XMLHttpRequestXMLHttpRequest")
 	do %response.SetHeader("Access-Control-Allow-Headers","Content-Type, Authorization, Accept-Language, X-Requested-With, session")
+    do %response.SetHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
     q $$$OK
 }
 
