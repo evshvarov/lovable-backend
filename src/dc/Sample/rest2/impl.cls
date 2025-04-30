@@ -4,7 +4,7 @@ Class dc.Sample.rest2.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
 /// If ExposeServerExceptions is true, then details of internal errors will be exposed.
-Parameter ExposeServerExceptions = 0;
+Parameter ExposeServerExceptions = 1;
 
 ClassMethod OnPreDispatch(pUrl As %String, pMethod As %String, ByRef pContinue As %Boolean) As %Status
 {
