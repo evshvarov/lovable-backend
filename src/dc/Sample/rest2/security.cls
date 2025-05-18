@@ -6,7 +6,7 @@ ClassMethod SetupSecurity() As %Status
     Set tSC = $$$OK
     d ..IntroduceRoleLovable()
     d ..AddRole()
-    d ..AddCORS()
+    ;d ..AddCORS()
     Quit tSC
 }
 
