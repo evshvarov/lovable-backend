@@ -26,6 +26,7 @@ ClassMethod IntroduceRoleLovable() As %Status
 ClassMethod AddRole(appname = "/crud2", approle = "lovable") As %Status
 {
     // Change to the %SYS namespace.
+    new $NAMESPACE
     set $NAMESPACE="%SYS"
 
     set status=##class(Security.Applications).Get(appname, .MyAppProps)
@@ -43,6 +44,7 @@ ClassMethod AddRole(appname = "/crud2", approle = "lovable") As %Status
 ClassMethod AddCORS(appname = "/crud2") As %Status
 {
     // Change to the %SYS namespace.
+    new $NAMESPACE
     set $NAMESPACE="%SYS"
 
     set status=##class(Security.Applications).Get(appname, .MyAppProps)
