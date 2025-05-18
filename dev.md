@@ -124,3 +124,12 @@ http://localhost:52773/api/mgmnt/
 D ##class(Security.Users).Export("/home/irisowner/dev/roles.xml",,"*",1)
 
 change
+
+
+"x-ISC_DispatchParent":"dc.Sample.rest2.cors",
+
+
+Export applications
+
+do ##class(Security.Applications).Export("home/irisowner/dev/data/webapp.xml",,"/crud2")
+set sc=##class(Security.Applications).Export("/home/irisowner/dev/data/webapp.xml",,"/crud2")

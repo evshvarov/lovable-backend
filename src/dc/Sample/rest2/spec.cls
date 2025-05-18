@@ -11,7 +11,6 @@ XData OpenAPI [ MimeType = application/json ]
   "swagger":"2.0",
   "info":{
     "title":"Person API",
-    "x-ISC_DispatchParent":"dc.Sample.rest2.cors",
     "version":"1.0.0"
   },
   "basePath": "/crud2",

@@ -20,6 +20,9 @@
         Recurse="1"
         UseCookies="2"
         CookiePath="/crud2/"
+        CorsAllowlist="*"
+        CorsCredentialsAllowed="1"
+        CorsHeadersList="Content-Type,Authorization,Accept-Language,X-Requested-With,session"
        />
      <Invoke Class="dc.Sample.rest2.security" Method="SetupSecurity">
     </Invoke>
