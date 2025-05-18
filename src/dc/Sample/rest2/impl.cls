@@ -9,18 +9,19 @@ Parameter ExposeServerExceptions = 1;
 /// Get all persons
 ClassMethod GetAllPersons() As %Stream.Object
 {
-    ;d ..%SetContentType("application/json")
     set rset = ##class(dc.Sample.Person).ExtentFunc()
-
-    set stream=##class(%Stream.TmpCharacter).%New()
+     if rset.%SQLCODE<0 {
+        d ..%SetStatusCode(500)
+        d ..%SetHeader("X-Error", rset.%Message)
+        return ""
+    }
     set dynArray = [].%New()
     While rset.%Next() {
         do ##class(dc.Sample.Person).%OpenId(rset.ID).%JSONExportToString(.myPerson)
         Set dynObj = {}.%FromJSON(myPerson)
         do dynArray.%Push(dynObj)
     }
-    d stream.Write(dynArray.%ToJSON())
-    return stream
+    return dynArray
 }
 
 /// Create a new person<br/>
@@ -73,31 +74,23 @@ ClassMethod UpdatePersonById(id As %String, person As %Stream.Object) As %Stream
     set personObj = ##class(dc.Sample.Person).%OpenId(id)
     if personObj = "" {
         d ..%SetStatusCode(404)
-        d ..%SetHeader("Content-Type", "application/json")
         d ..%SetHeader("X-Error", "Person not found")
         return ""
     }
     set status = personObj.%JSONImport(person)
     if $$$ISERR(status) {
         d ..%SetStatusCode(400)
-        d ..%SetHeader("Content-Type", "application/json")
         d ..%SetHeader("X-Error", status.%Message())
         return status
     }
     set status = personObj.%Save()
     if $$$ISERR(status) {
         d ..%SetStatusCode(500)
-        d ..%SetHeader("Content-Type", "application/json")
         d ..%SetHeader("X-Error", status.%Message())
         return status
     }
     d ..%SetStatusCode(200)
     return person
-
-    //(Place business logic here)
-    //Do ..%SetStatusCode(<HTTP_status_code>)
-    //Do ..%SetHeader(<name>,<value>)
-    //Quit (Place response here) ; response may be a string, stream or dynamic object
 }
 
 /// Delete person by id<br/>
@@ -108,16 +101,11 @@ ClassMethod DeletePersonById(id As %String) As %Stream.Object
     set sc=##class(dc.Sample.Person).%DeleteId(id)
     if $$$ISERR(sc) {
         d ..%SetStatusCode(404)
-        d ..%SetHeader("Content-Type", "application/json")
-        d ..%SetHeader("X-Error", "Person not found")
+
         return ""
     }
     d ..%SetStatusCode(204)
     return {}
-    //(Place business logic here)
-    //Do ..%SetStatusCode(<HTTP_status_code>)
-    //Do ..%SetHeader(<name>,<value>)
-    //Quit (Place response here) ; response may be a string, stream or dynamic object
 }
 
 /// Get OpenAPI specification
