@@ -6,11 +6,10 @@ Class dc.Sample.rest2.impl Extends %REST.Impl [ ProcedureBlock ]
 /// If ExposeServerExceptions is true, then details of internal errors will be exposed.
 Parameter ExposeServerExceptions = 1;
 
-
-
 /// Get all persons
 ClassMethod GetAllPersons() As %Stream.Object
 {
+    d ..%SetContentType("application/json")
     set rset = ##class(dc.Sample.Person).ExtentFunc()
 
     set stream=##class(%Stream.TmpCharacter).%New()
