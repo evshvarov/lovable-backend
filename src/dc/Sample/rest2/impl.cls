@@ -9,7 +9,7 @@ Parameter ExposeServerExceptions = 1;
 /// Get all persons
 ClassMethod GetAllPersons() As %Stream.Object
 {
-    d ..%SetContentType("application/json")
+    ;d ..%SetContentType("application/json")
     set rset = ##class(dc.Sample.Person).ExtentFunc()
 
     set stream=##class(%Stream.TmpCharacter).%New()
