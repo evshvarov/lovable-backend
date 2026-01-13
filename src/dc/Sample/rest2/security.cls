@@ -8,7 +8,7 @@ ClassMethod SetupSecurity() As %Status
     d ..AddRole()
     d ..AddCORS()
     d ..IntroduceRoleDBUSER()
-    d ..AddDBUserRoleToUser()
+    d ..AddRoleToUser()
     Quit tSC
 }
 
@@ -44,7 +44,7 @@ ClassMethod IntroduceRoleDBUSER() As %Status
     return sc
 }
 
-ClassMethod AddDBUserRoleToUser(user = "CSPSystem", role = "DB_USER_Read") As %Status
+ClassMethod AddRoleToUser(user = "CSPSystem", role = "DB_USER_Read") As %Status
 {
     // Change to the %SYS namespace.
     new $NAMESPACE

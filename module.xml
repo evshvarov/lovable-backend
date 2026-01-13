@@ -10,6 +10,8 @@
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="dc.Sample.Person.CLS"/>
       <Resource Name="dc.Sample.rest2.PKG"/>
+      <UnitTest Name="/tests" Package="dc.Sample.rest2.unittests" Phase="test"/>
+
 
        <CSPApplication
         Url="/crud2"

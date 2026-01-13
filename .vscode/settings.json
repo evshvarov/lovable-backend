@@ -13,7 +13,8 @@
       },
       "active": true,
       "links": {
-        "Swagger": "${serverUrl}/swagger-ui/index.html"
+        "Swagger": "${serverUrl}/swagger-ui/index.html",
+        "Unit Tests": "${serverUrl}/csp/sys/%25UnitTest.Portal.Home.cls?$NAMESPACE=USER"
       }
     }
 
