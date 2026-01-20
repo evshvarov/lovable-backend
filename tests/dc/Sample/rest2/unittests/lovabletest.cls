@@ -3,15 +3,26 @@ Class dc.Sample.rest2.unittests.lovabletest Extends %UnitTest.TestCase [ Procedu
 
 Property CreatedIds As %ListOfDataTypes;
 
+Property CreatedPropertyIds As %ListOfDataTypes;
+
 Method SetUp() As %Status
 {
     set ..CreatedIds = ""
+    set ..CreatedPropertyIds = ""
     do ..InitRestContext()
     quit $$$OK
 }
 
 Method TearDown() As %Status
 {
+    set i = 1
+    for {
+        set id = $List(..CreatedPropertyIds, i)
+        quit:(id = "")
+        set sc = ##class(dc.Sample.RealEstate).%DeleteId(id)
+        set i = i + 1
+    }
+
     set i = 1
     for {
         set id = $List(..CreatedIds, i)
@@ -98,6 +109,144 @@ Method TestDeletePersonById() As %Status
     quit $$$OK
 }
 
+Method TestGetAllProperties() As %Status
+{
+    do ..InitRestContext()
+    set personName = ..NewTestName()
+    set personId = ..CreatePersonFixture(personName)
+    do ..AddCreatedId(personId)
+
+    set propertyName = "Property-"_..NewTestName()
+    set propertyId = ..CreatePropertyFixture(personId, propertyName)
+    do ..AddCreatedPropertyId(propertyId)
+
+    set result = ##class(dc.Sample.rest2.impl).GetAllProperties()
+    do $$$AssertTrue(result.%Size() > 0)
+
+    set found = 0
+    for i = 1:1:result.%Size() {
+        if result.%Get(i).Name = propertyName {
+            set found = 1
+            quit
+        }
+    }
+    do $$$AssertTrue(found = 1)
+    quit $$$OK
+}
+
+Method TestCreateProperty() As %Status
+{
+    do ..InitRestContext()
+    set personName = ..NewTestName()
+    set personId = ..CreatePersonFixture(personName)
+    do ..AddCreatedId(personId)
+
+    set propertyName = "Property-"_..NewTestName()
+    set stream = ..BuildPropertyStream(propertyName, personId)
+
+    set result = ##class(dc.Sample.rest2.impl).CreateProperty(stream)
+    do $$$AssertTrue($IsObject(result))
+    do $$$AssertNotEquals("", result.id)
+    do ..AddCreatedPropertyId(result.id)
+    quit $$$OK
+}
+
+Method TestGetPropertyById() As %Status
+{
+    do ..InitRestContext()
+    set personName = ..NewTestName()
+    set personId = ..CreatePersonFixture(personName)
+    do ..AddCreatedId(personId)
+
+    set propertyName = "Property-"_..NewTestName()
+    set propertyId = ..CreatePropertyFixture(personId, propertyName)
+    do ..AddCreatedPropertyId(propertyId)
+
+    set property = ##class(dc.Sample.rest2.impl).GetPropertyById(propertyId)
+    do $$$AssertEquals(propertyName, property.Name)
+    do $$$AssertEquals(personId, property.OwnerId)
+    quit $$$OK
+}
+
+Method TestUpdatePropertyById() As %Status
+{
+    do ..InitRestContext()
+    set personName = ..NewTestName()
+    set personId = ..CreatePersonFixture(personName)
+    do ..AddCreatedId(personId)
+
+    set propertyName = "Property-"_..NewTestName()
+    set propertyId = ..CreatePropertyFixture(personId, propertyName)
+    do ..AddCreatedPropertyId(propertyId)
+
+    set newName = "Property-"_..NewTestName()
+    set stream = ..BuildPropertyStream(newName)
+
+    do ##class(dc.Sample.rest2.impl).UpdatePropertyById(propertyId, stream)
+    set propertyObj = ##class(dc.Sample.RealEstate).%OpenId(propertyId)
+    do $$$AssertEquals(newName, propertyObj.Name)
+    quit $$$OK
+}
+
+Method TestDeletePropertyById() As %Status
+{
+    do ..InitRestContext()
+    set personName = ..NewTestName()
+    set personId = ..CreatePersonFixture(personName)
+    do ..AddCreatedId(personId)
+
+    set propertyName = "Property-"_..NewTestName()
+    set propertyId = ..CreatePropertyFixture(personId, propertyName)
+    do ..AddCreatedPropertyId(propertyId)
+
+    do ##class(dc.Sample.rest2.impl).DeletePropertyById(propertyId)
+    set propertyObj = ##class(dc.Sample.RealEstate).%OpenId(propertyId)
+    do $$$AssertEquals("", propertyObj)
+    quit $$$OK
+}
+
+Method TestGetPersonProperties() As %Status
+{
+    do ..InitRestContext()
+    set personName = ..NewTestName()
+    set personId = ..CreatePersonFixture(personName)
+    do ..AddCreatedId(personId)
+
+    set propertyName = "Property-"_..NewTestName()
+    set propertyId = ..CreatePropertyFixture(personId, propertyName)
+    do ..AddCreatedPropertyId(propertyId)
+
+    set result = ##class(dc.Sample.rest2.impl).GetPersonProperties(personId)
+    do $$$AssertTrue(result.%Size() > 0)
+
+    set found = 0
+    for i = 0:1:result.%Size() {
+        if result.%Get(i).Name = propertyName {
+            set found = 1
+            quit
+        }
+    }
+    do $$$AssertTrue(found = 1)
+    quit $$$OK
+}
+
+Method TestAddPropertyToPerson() As %Status
+{
+    do ..InitRestContext()
+    set personName = ..NewTestName()
+    set personId = ..CreatePersonFixture(personName)
+    do ..AddCreatedId(personId)
+
+    set propertyName = "Property-"_..NewTestName()
+    set stream = ..BuildPropertyStream(propertyName)
+
+    set result = ##class(dc.Sample.rest2.impl).AddPropertyToPerson(personId, stream)
+    do $$$AssertTrue($IsObject(result))
+    do $$$AssertEquals(personId, result.OwnerId)
+    do ..AddCreatedPropertyId(result.id)
+    quit $$$OK
+}
+
 Method TestGetSpec() As %Status
 {
     do ..InitRestContext()
@@ -143,6 +292,23 @@ Method BuildPersonStream(name As %String, title As %String = "Engineer", company
     quit stream
 }
 
+Method BuildPropertyStream(name As %String, ownerId As %String = "", address As %String = "123 Main St", notes As %String = "Test notes") As %Stream.Object
+{
+    set dyn = {}.%New()
+    set dyn.Name = name
+    set dyn.Address = address
+    set dyn.Notes = notes
+    if ownerId'="" {
+        set dyn.OwnerId = ownerId
+    }
+
+    set json = dyn.%ToJSON()
+    set stream = ##class(%Stream.GlobalCharacter).%New()
+    do stream.Write(json)
+    do stream.Rewind()
+    quit stream
+}
+
 Method CreatePersonFixture(name As %String) As %String
 {
     set person = ##class(dc.Sample.Person).%New()
@@ -159,6 +325,25 @@ Method CreatePersonFixture(name As %String) As %String
     quit person.%Id()
 }
 
+Method CreatePropertyFixture(ownerId As %String, name As %String) As %String
+{
+    set ownerObj = ##class(dc.Sample.Person).%OpenId(ownerId)
+    if ownerObj = "" {
+        quit ""
+    }
+    set propertyObj = ##class(dc.Sample.RealEstate).%New()
+    set propertyObj.Owner = ownerObj
+    set propertyObj.Name = name
+    set propertyObj.Address = "123 Main St"
+    set propertyObj.Notes = "Test notes"
+
+    set sc = propertyObj.%Save()
+    if $$$ISERR(sc) {
+        quit ""
+    }
+    quit propertyObj.%Id()
+}
+
 Method FindPersonIdByName(name As %String) As %String
 {
     set id = ""
@@ -173,10 +358,37 @@ Method FindPersonIdByName(name As %String) As %String
     quit id
 }
 
+Method FindPropertyIdByName(name As %String, ownerId As %String = "") As %String
+{
+    set id = ""
+    set rset = ##class(dc.Sample.RealEstate).ExtentFunc()
+    while rset.%Next() {
+        set propertyObj = ##class(dc.Sample.RealEstate).%OpenId(rset.ID)
+        if propertyObj'="",propertyObj.Name = name {
+            if ownerId = "" {
+                set id = rset.ID
+                quit
+            }
+            if propertyObj.Owner'="",propertyObj.Owner.%Id() = ownerId {
+                set id = rset.ID
+                quit
+            }
+        }
+    }
+    quit id
+}
+
 Method AddCreatedId(id As %String)
 {
     if id'="" {
         set ..CreatedIds = $ListBuild(..CreatedIds, id)
+    }
+}
+
+Method AddCreatedPropertyId(id As %String)
+{
+    if id'="" {
+        set ..CreatedPropertyIds = $ListBuild(..CreatedPropertyIds, id)
     }
 }
 
